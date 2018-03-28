@@ -6,6 +6,7 @@ sxr = read_sxr('sxr.txt')
 
 def lxr_ner(text):
 
+    text = text.replace('\n', '')
     sentences = get_effect_sent(text)
     sent_str = " ".join(sentences)
 
@@ -16,4 +17,4 @@ def lxr_ner(text):
     for name in lxr_set:
         if name not in sxr:
             data.append(name)
-    return str(data)
+    return str(dict(result=data))

@@ -56,7 +56,8 @@ def sx_object_extract(entity):
     sx_object = []
     for n in entity:
         if n[2] in labels or n[1] in pos or n[0] == '投诉办':
-            sx_object.append(n[0])
+            if n[0] not in sx_object:
+                sx_object.append(n[0])
     return sx_object
 
 
@@ -68,18 +69,48 @@ def lxr_extract(entity):
     lxr = []
     for n in entity:
         if n[2] in labels or n[1] in pos:
-            if len(n[0]) > 1:
+            if len(n[0]) > 1 and n[0] not in lxr:
                 lxr.append(n[0])
-    return set(lxr)
+    return lxr
 
 
-# 得到包含受信对象的语句
+# 抽取文本的第一句和最后一句
 def get_effect_sent(text):
 
     sentences = extract.split(text)
+    # print('sentences:', sentences)
     effective_sents = [sentences[0], sentences[sentences.__len__() - 1]]
 
     return effective_sents
+
+
+# 组织机构抽取
+def org_extract(entity):
+    labels = []
+    pos = ['ni']
+    org = []
+    for n in entity:
+        if n[2] in labels or n[1] in pos:
+            if len(n[0]) > 1 and n[0] not in org:
+                org.append(n[0])
+    return org
+
+
+# 地址抽取
+def address_extract(entity):
+    labels = ['B-Ns', 'I-Ns', 'E-Ns', 'S-Ns']
+    pos = ['ns']
+    address = []
+    s = ''
+    for n in entity:
+        if n[1] in pos and n[2] in labels:
+            s += n[0]
+            continue
+        else:
+            if s != "" and s not in address:
+                address.append(s)
+            s = ''
+    return address
 
 
 if __name__ == '__main__':

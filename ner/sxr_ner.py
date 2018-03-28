@@ -11,6 +11,7 @@ def sxr_ner(text):
     print('sxr:', sxr)
     print('sxr_rel_list:', sxr_rel_list)
 
+    text = text.replace('\n', '')
     sents = get_effect_sent(text)
     sent_str = " ".join(sents)
 
@@ -32,7 +33,7 @@ def sxr_ner(text):
             obj.append(bt)
 
     full_name = name_link(obj)
-    data = str(full_name)
+    data = str(dict(result=full_name))
     return data
 
 
