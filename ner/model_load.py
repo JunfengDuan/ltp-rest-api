@@ -25,7 +25,7 @@ def segment(text, lexicon_path=None):
         cws_model_path = os.path.join(LTP_DATA_DIR, 'cws.model')  # 分词模型路径，模型名称为`cws.model`
         segmentor = Segmentor()  # 初始化实例
         if lexicon_path is not None:
-            segmentor.load_with_lexicon(cws_model_path, lexicon_path) # 加载模型，第二个参数是您的外部词典文件路径
+            segmentor.load_with_lexicon(cws_model_path, 'dict/lexicon.txt')  # 加载模型，第二个参数是您的外部词典文件路径
         else:
             segmentor.load(cws_model_path)
     words = segmentor.segment(text)  # 分词
@@ -70,14 +70,17 @@ def parse(words, postags):
     for arc in arcs:
         arcl = (arc.head, arc.relation)
         parsers.append(arcl)
-    return parsers
+    return parsers, arcs
 
 
 # 语义角色标注
+# Linux 使用 pisrl.model
+# windows 使用 pisrl_win.model
 def srl(words, postags, arcs):
     global labeller
     if labeller is None:
-        srl_model_path = os.path.join(LTP_DATA_DIR, 'srl')  # 语义角色标注模型目录路径，模型目录为`srl`。注意该模型路径是一个目录，而不是一个文件。
+        srl_model_path = os.path.join(LTP_DATA_DIR, 'pisrl.model')  # 语义角色标注模型目录路径，模型目录为`srl`。注意该模型路径是一个目录，而不是一个文件。
+        print('srl_model_path:', srl_model_path)
         labeller = SementicRoleLabeller() # 初始化实例
         labeller.load(srl_model_path)  # 加载模型
 

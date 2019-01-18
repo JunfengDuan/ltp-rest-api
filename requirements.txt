@@ -1,3 +1,4 @@
-pyltp==0.2.1
-flask==0.12.2
-
+pyltp>=0.2.1
+flask>=0.12.2
+flask-cors>=3.0.6
+gevent>=1.4.0
